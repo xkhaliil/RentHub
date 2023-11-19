@@ -1,8 +1,10 @@
-package com.example.renthub;
+package com.example.renthub.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.renthub.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
