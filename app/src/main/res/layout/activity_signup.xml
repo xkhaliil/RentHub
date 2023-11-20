@@ -97,22 +97,9 @@
                 android:inputType="textPassword"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:layout_marginTop="20dp"
-            android:id="@+id/belowText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center|fill"
-            android:text="Please choose your current resident location. "/>
+
         <Button
-            android:id="@+id/picklocationbutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your current adresse"
-            android:layout_marginBottom="10dp"
-            android:transitionName="button1_img"
-            />
-        <Button
+            android:layout_marginTop="50dp"
             android:id="@+id/buttongo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
