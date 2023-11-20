@@ -52,20 +52,19 @@ TextInputLayout username,password;
             @Override
             public void onClick(android.view.View v) {
                 android.content.Intent intent = new android.content.Intent(LoginActivity.this, ForgetPasswordActivity.class);
-                /*
-                Pair[] pairs = new Pair[8];
+
+                Pair[] pairs = new Pair[6];
                 pairs[0] = new Pair<android.view.View, String>(findViewById(R.id.lottieAnimationView), "lottie_img");
                 pairs[1] = new Pair<android.view.View, String>(findViewById(R.id.welcome), "text_img");
                 pairs[2] = new Pair<android.view.View, String>(findViewById(R.id.continueee), "text2_img");
                 pairs[3] = new Pair<android.view.View, String>(findViewById(R.id.username), "input1_img");
-                pairs[4] = new Pair<android.view.View, String>(findViewById(R.id.password), "input2_img");
-                pairs[5] = new Pair<android.view.View, String>(findViewById(R.id.buttonforgetpassword), "button1_img");
-                pairs[6] = new Pair<android.view.View, String>(findViewById(R.id.buttonlogin), "button2_img");
-                pairs[7] = new Pair<android.view.View, String>(findViewById(R.id.buttonsignup), "button3_img");
+                pairs[4] = new Pair<android.view.View, String>(findViewById(R.id.buttonlogin), "button2_img");
+                pairs[5] = new Pair<android.view.View, String>(findViewById(R.id.buttonsignup), "button3_img");
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
-                startActivity(intent, options.toBundle());*/
-                startActivity(intent);
+                startActivity(intent, options.toBundle());
+
             }
         });
+
     }
 }
