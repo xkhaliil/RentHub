@@ -171,6 +171,11 @@
 
                 />
         </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/updatebuttonaccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update"></Button>
         <TextView
             android:layout_marginTop="20pt"
             android:layout_width="wrap_content"

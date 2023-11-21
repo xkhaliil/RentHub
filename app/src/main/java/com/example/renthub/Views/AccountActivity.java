@@ -1,8 +1,11 @@
 package com.example.renthub.Views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -24,6 +27,7 @@ public class AccountActivity extends AppCompatActivity {
     TextInputLayout password;
     Button changePassword;
     ImageButton signOut;
+    Button update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,9 @@ public class AccountActivity extends AppCompatActivity {
         email = findViewById(R.id.emailAccount);
         phone = findViewById(R.id.phoneaccount);
         password = findViewById(R.id.passwordaccount);
+        signOut = findViewById(R.id.signoutbutton);
+        changePassword = findViewById(R.id.changepasswordbutton);
+        update = findViewById(R.id.updatebuttonaccount);
         Button changePassword = findViewById(R.id.changepasswordbutton);
         ImageButton signOut = findViewById(R.id.signoutbutton);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -62,5 +69,49 @@ public class AccountActivity extends AppCompatActivity {
             android.content.Intent intent = new android.content.Intent(AccountActivity.this, LoginActivity.class);
             startActivity(intent);
         });
+        changePassword.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(AccountActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
+        });
+        update.setOnClickListener(v -> {
+            // Validate user input (you can customize this validation as needed)
+            if (isValidInput()) {
+                // Perform the update operation
+                DocumentReference washingtonRef = db.collection("users").document(user.getUid());
+                washingtonRef
+                        .update(
+                                "username", username.getEditText().getText().toString(),
+                                "phone", phone.getEditText().getText().toString(),
+                                "password", password.getEditText().getText().toString()
+                        )
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("TAG", "DocumentSnapshot successfully updated!");
+                            // Show a success dialog
+                            showAlertDialog("Update Successful", "User information updated successfully.");
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("TAG", "Error updating document", e);
+                            // Show an error dialog
+                            showAlertDialog("Update Failed", "Failed to update user information. Please try again.");
+                        });
+            } else {
+                // Show an error dialog for invalid input
+                showAlertDialog("Invalid Input", "Please enter valid information.");
+            }
+        });
+
+
+    }
+    private void showAlertDialog(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private boolean isValidInput() {
+        return !TextUtils.isEmpty(username.getEditText().getText())
+                && !TextUtils.isEmpty(phone.getEditText().getText())
+                && !TextUtils.isEmpty(password.getEditText().getText());
     }
 }

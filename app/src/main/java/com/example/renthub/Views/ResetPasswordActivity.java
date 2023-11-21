@@ -2,9 +2,7 @@ package com.example.renthub.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityOptions;
 import android.os.Bundle;
-import android.util.Pair;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,10 +10,10 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.renthub.R;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ForgetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity {
+
     LottieAnimationView lottieAnimationView;
     TextView forget;
     TextView enteremail;
@@ -26,7 +24,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN, android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN); // to hide the status bar
-        setContentView(R.layout.activity_forget_password);
+        setContentView(R.layout.activity_reset_password);
         lottieAnimationView = findViewById(R.id.lottieAnimationView);
         forget = findViewById(R.id.forget);
         enteremail = findViewById(R.id.enteremailtext);
@@ -55,7 +53,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         android.util.Log.d("TAG", "Email sent.");
-                        Toast.makeText(ForgetPasswordActivity.this, "Please chack your Email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPasswordActivity.this, "Please chack your Email", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
