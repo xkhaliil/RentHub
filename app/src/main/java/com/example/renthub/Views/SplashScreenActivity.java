@@ -3,9 +3,7 @@ package com.example.renthub.Views;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -60,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, HomeActivity.class);
+                    android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, AccountActivity.class);
                     startActivity(intent);
                 }
             }, SPLASH_SCREEN);
