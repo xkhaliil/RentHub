@@ -109,33 +109,11 @@ public class SignupActivity extends AppCompatActivity {
             return true;
         }
     }
-    public void registerUser(){
+    public void registerUser(String uid){
         if(!validateFullName()|!validatePassword()|!validatePhoneNo()|!validateEmail()){
             return;
         }
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", username.getEditText().getText().toString());
-        user.put("email", email.getEditText().getText().toString());
-        user.put("phone", phone.getEditText().getText().toString());
-        user.put("password", password.getEditText().getText().toString());
 
-        // Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
 
 
     }
@@ -174,7 +152,7 @@ public class SignupActivity extends AppCompatActivity {
         signup_btn.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
-                registerUser();
+
                 mAuth.createUserWithEmailAndPassword(email.getEditText().getText().toString(), password.getEditText().getText().toString())
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -183,6 +161,29 @@ public class SignupActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    // Create a new user with a first and last name
+                                    Map<String, Object> Newuser = new HashMap<>();
+                                    Newuser.put("username", username.getEditText().getText().toString());
+                                    Newuser.put("email", email.getEditText().getText().toString());
+                                    Newuser.put("phone", phone.getEditText().getText().toString());
+                                    Newuser.put("password", password.getEditText().getText().toString());
+                                    Newuser.put("uid", user.getUid());
+
+                                    // Add a new document with a generated ID
+                                    db.collection("users").document(user.getUid())
+                                            .set(Newuser).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot added with ID: ");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error adding document", e);
+                                                }
+                                            });
                                     Intent j = new Intent(SignupActivity.this, AccountActivity.class);
                                     j.putExtra("user", user);
                                     startActivity(j);

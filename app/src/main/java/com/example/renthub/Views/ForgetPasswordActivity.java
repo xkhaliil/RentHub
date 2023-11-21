@@ -29,7 +29,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         enteremail = findViewById(R.id.enteremailtext);
         email = findViewById(R.id.emailverification);
         reset = findViewById(R.id.reset);
-        back = findViewById(R.id.goback);
+
 
         back.setOnClickListener(new android.view.View.OnClickListener() {
             @Override

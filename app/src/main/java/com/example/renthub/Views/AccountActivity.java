@@ -45,13 +45,22 @@ public class AccountActivity extends AppCompatActivity {
             String email1 = user.getEmail();
             String phone1 = user.getPhoneNumber();
             email.getEditText().setText(email1);
-
-
-
-
-
-
-
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    android.util.Log.d("TAG", "DocumentSnapshot data: " + task.getResult().getData());
+                    username.getEditText().setText(task.getResult().getData().get("username").toString());
+                    phone.getEditText().setText(task.getResult().getData().get("phone").toString());
+                    password.getEditText().setText(task.getResult().getData().get("password").toString());
+                } else {
+                    android.util.Log.d("TAG", "get failed with ", task.getException());
+                }
+            });
         }
+        signOut.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            android.content.Intent intent = new android.content.Intent(AccountActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
     }
 }
