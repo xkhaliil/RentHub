@@ -176,29 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Update"></Button>
-        <TextView
-            android:layout_marginTop="20pt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please view and don't share your password with anyone"
-            ></TextView>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordaccount"
-            android:layout_width="match_parent"
-            app:boxBackgroundColor="#fefae0"
-            android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            android:hint="Password"
-            android:layout_marginBottom="10dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/password"
-                android:drawablePadding="10dp"
-                android:inputType="textPassword"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/changepasswordbutton"
             android:layout_width="match_parent"
