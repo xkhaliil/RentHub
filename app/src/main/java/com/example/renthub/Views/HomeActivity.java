@@ -13,5 +13,5 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
     }
-   //TO DO : finish home activity
+   //TO DO : finish home activityyyy
 }
