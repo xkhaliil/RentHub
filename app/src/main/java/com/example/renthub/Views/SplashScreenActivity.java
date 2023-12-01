@@ -38,12 +38,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-
-
-
-
-
-
 public class SplashScreenActivity extends AppCompatActivity implements LocationListener {
     LocationManager locationManager;
     private FirebaseAuth mAuth;

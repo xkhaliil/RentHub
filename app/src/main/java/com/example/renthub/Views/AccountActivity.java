@@ -127,7 +127,7 @@ public class AccountActivity extends AppCompatActivity {
         assistant.setOnClickListener(v -> {
             showAlertDialog2("Assistant", "call us or email us on ltaief.khalil@gmail.com for more assistance");
         });
-
+       //TO DO : UPDATE THE AUTHENTICATED USER DATA
     }
     private void showAlertDialog2(String title, String message) {
         // make a button open intent to call and another button to visit email and specify the email to send to ltaief.khalil@gmail.com .
