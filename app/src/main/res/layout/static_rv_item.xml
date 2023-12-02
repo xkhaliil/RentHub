@@ -14,7 +14,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
-        android:src="@drawable/car"
+        android:src="@drawable/suv"
         android:layout_marginTop="15dp"/>
 
     <TextView
