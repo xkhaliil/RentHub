@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.renthub.R;
 import com.example.renthub.Views.DRVinterface.LoadMore;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ArrayList<StaticRvModel> item = new ArrayList<>();
@@ -43,16 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(staticRvAdapter);
 
-       /*   items.add(new DynamicRVModel("SUV"));
-        items.add(new DynamicRVModel("CONVERTIBLE"));
-        items.add(new DynamicRVModel("COUPE"));
-        items.add(new DynamicRVModel("HATCHBACK"));
-        items.add(new DynamicRVModel("SEDAN"));
-        items.add(new DynamicRVModel("Sports"));
-        items.add(new DynamicRVModel("TRUCK"));
-        items.add(new DynamicRVModel("VAN"));
-        items.add(new DynamicRVModel("PICKUP"));
-        items.add(new DynamicRVModel("MINI_BUS"));*/
+
 
         RecyclerView drv = findViewById(R.id.rv_2);
         drv.setLayoutManager(new LinearLayoutManager(this));
@@ -92,8 +86,18 @@ public class HomeActivity extends AppCompatActivity {
         staticRvAdapter.setOnItemClickListener(new StaticRvAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(StaticRvModel item) {
-                // Handle item click by adding it to the dynamic RecyclerView
-                addItemToDynamicRecyclerView(item);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String vehicleType = item.getText();
+                DocumentReference docRef = db.collection(vehicleType).document();
+                docRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        android.util.Log.d("TAG", "DocumentSnapshot data: " + task.getResult().getData());
+                        //username.getEditText().setText(task.getResult().getData().get("username").toString());
+                    } else {
+                        android.util.Log.d("TAG", "get failed with ", task.getException());
+                    }
+                });
+                //addItemToDynamicRecyclerView(item);
             }
         });
     }
@@ -105,11 +109,12 @@ public class HomeActivity extends AppCompatActivity {
 
         // Create a DynamicRVModel with the extracted information
         DynamicRVModel dynamicRVModel = new DynamicRVModel(itemName);
-
+        items.clear();
         // Add the item to the dynamic RecyclerView's adapter
         items.add(dynamicRVModel);
 
         // Notify the adapter that the dataset has changed
         dynamicRVAdapter.notifyDataSetChanged();
     }
+
 }
