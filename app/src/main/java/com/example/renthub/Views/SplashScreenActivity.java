@@ -157,7 +157,7 @@ public class SplashScreenActivity extends AppCompatActivity implements LocationL
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, AccountActivity.class);
+                    android.content.Intent intent = new android.content.Intent(SplashScreenActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
             }, SPLASH_SCREEN);

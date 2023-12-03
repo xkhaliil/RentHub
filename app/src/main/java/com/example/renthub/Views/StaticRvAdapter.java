@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.renthub.R;
+import com.example.renthub.Views.Models.StaticRvModel;
 
 import java.util.ArrayList;
 
@@ -78,4 +79,5 @@ public class StaticRvAdapter extends RecyclerView.Adapter<StaticRvAdapter.Static
             linearLayout = itemView.findViewById(R.id.linearLayout);
         }
     }
+
 }

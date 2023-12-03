@@ -1,4 +1,4 @@
-package com.example.renthub.Views;
+package com.example.renthub.Views.Models;
 
 public class StaticRvModel {
     private int image;

@@ -1,11 +1,14 @@
 package com.example.renthub.Views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.renthub.R;
 import com.example.renthub.Views.DRVinterface.LoadMore;
+import com.example.renthub.Views.Models.DynamicRVModel;
 
 import java.util.List;
 
@@ -27,10 +31,16 @@ class LoadingViewHolder extends RecyclerView.ViewHolder {
 
 class ItemViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
+    public TextView price;
+    public ImageView image;
+
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
         name = itemView.findViewById(R.id.name);
+        price = itemView.findViewById(R.id.price);
+        image = itemView.findViewById(R.id.imageView);
+
     }
 }
 
@@ -76,10 +86,26 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(activity).inflate(R.layout.dynamic_rv_item_layout, parent, false);
-            return new ItemViewHolder(view);
+            final ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+
+            // Set click listener for the item
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = itemViewHolder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        DynamicRVModel clickedItem = items.get(position);
+                        // Show Toast with the content of the clicked item
+                        Intent j = new Intent(activity, RentCarActivity.class);
+                        j.putExtra("DocumentUID", clickedItem.getDocumentUID());
+                        activity.startActivity(j);
+                    }
+                }
+            });
+
+            return itemViewHolder;
         } else if (viewType == VIEW_TYPE_LOADING) {
             View view = LayoutInflater.from(activity).inflate(R.layout.dynamic_rv_progress_bar, parent, false);
             return new LoadingViewHolder(view);
@@ -88,12 +114,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return null;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             DynamicRVModel item = items.get(position);
             ItemViewHolder viewHolder = (ItemViewHolder) holder;
             viewHolder.name.setText(items.get(position).getName());
+            viewHolder.price.setText(items.get(position).getPrice());
+            viewHolder.image.setImageResource(R.drawable.rent);
         } else if (holder instanceof LoadingViewHolder) {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
         }
@@ -107,4 +136,13 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setLoaded() {
         isLoading = false;
     }
+
+    public void clear() {
+        items.clear();
+        notifyDataSetChanged();
+    }
+
+
+
 }
+
