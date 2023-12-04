@@ -21,8 +21,14 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.renthub.R;
 
+import com.example.renthub.Views.Models.DynamicRVModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import android.location.Address;
@@ -35,6 +41,8 @@ import android.widget.Toast;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,6 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity implements LocationL
         //runtime permission
         ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},44);
         getLocation();
+        updateAvailableCars();
 
 
     }
@@ -177,5 +186,92 @@ public class SplashScreenActivity extends AppCompatActivity implements LocationL
             }, SPLASH_SCREEN);
         }
     }
+public void updateAvailableCars(){
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("cars")
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                private static final String TAG = "TAG";
 
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("name");
+                            String price = document.getString("price");
+                            String duid = document.getId();
+                            db.collection("AvailabiltyDate").whereEqualTo("carId", duid).get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document1 : task1.getResult()) {
+                                        String startDate = document1.getString("startDate");
+                                        String endDate = document1.getString("endDate");
+                                        startDate = startDate.substring(0,10);
+                                        endDate = endDate.substring(0,10);
+                                        DateTimeFormatter dtf = null;
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                            dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                        }
+                                        LocalDateTime now = null;
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                            now = LocalDateTime.now();
+                                        }
+                                        String dateToday = null;
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                            dateToday = dtf.format(now);
+                                        }
+                                        System.out.println(dateToday);
+                                        //compare between date1 and dateToday
+                                        if(startDate.compareTo(dateToday) > 0)
+                                        {
+                                            System.out.println("startDate comes after todays date");
+                                            //update availability to yes
+                                            db.collection("cars").document(duid).update("availability", "yes");
+                                        }
+                                        else if(startDate.compareTo(dateToday) < 0)
+                                        {
+                                            System.out.println("startDate comes before todays date");
+                                            db.collection("cars").document(duid).update("availability", "no");
+                                        }
+                                        else if(startDate.compareTo(dateToday) == 0)
+                                        {
+                                            System.out.println("startDate and todays date are equal");
+                                            db.collection("cars").document(duid).update("availability", "no");
+                                        }
+                                        else if(endDate.compareTo(dateToday) > 0)
+                                        {
+                                            System.out.println("Date 2 comes after todays date");
+                                            db.collection("cars").document(duid).update("availability", "no");
+                                        }
+                                        else if(endDate.compareTo(dateToday) < 0)
+                                        {
+                                            System.out.println("Date 2 comes before todays date");
+                                            db.collection("cars").document(duid).update("availability", "yes");
+                                        }
+                                        else if(endDate.compareTo(dateToday) == 0)
+                                        {
+                                            System.out.println("Date 2 and todays date are equal");
+                                            db.collection("cars").document(duid).update("availability", "no");
+                                        }
+                                        else
+                                        {
+                                            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa?");
+                                        }
+
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+
+                                }
+                            });
+                        }
+
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+
+                    }
+                }
+            });
+}
 }   

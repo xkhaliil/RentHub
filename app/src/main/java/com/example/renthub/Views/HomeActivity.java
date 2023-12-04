@@ -16,10 +16,13 @@ import com.example.renthub.Views.Models.DynamicRVModel;
 import com.example.renthub.Views.Models.StaticRvModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("cars")
                 .whereEqualTo("type", staticRvModel.getText())
+                   .whereEqualTo("availability", "yes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     private static final String TAG = "TAG";
@@ -95,7 +99,6 @@ public class HomeActivity extends AppCompatActivity {
                                 String duid = document.getId();
                                 DynamicRVModel item = new DynamicRVModel(name,price,duid);
                                 items.add(item);
-
                             }
                             dynamicRVAdapter.notifyDataSetChanged();
                         } else {
