@@ -1,5 +1,7 @@
 package com.example.renthub.Views;
 
+import static com.example.renthub.Views.SplashScreenActivity.country;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -41,17 +43,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RentCarActivity extends AppCompatActivity {
-ImageView imageView;
-CalendarView calendarView,calendarView2;
-Spinner spinner;
-TextView price;
-Button confirm;
-public static String selectedDate1;
-public static String selectedDate2;
-public static String pricee;
-public static int total;
+    ImageView imageView;
+    CalendarView calendarView, calendarView2;
+    Spinner spinner;
+    TextView price;
+    Button confirm;
+    public static String selectedDate1;
+    public static String selectedDate2;
+    public static String pricee;
+    public static int total;
     private boolean isDate1Selected = false;
     private boolean isDate2Selected = false;
+    private static String carname;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,6 @@ public static int total;
         confirm = findViewById(R.id.confirm);
 
 
-
         ArrayAdapter adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.location,
@@ -72,11 +75,6 @@ public static int total;
         //link the adapter to the spinner
         spinner = findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
-
-
-
-
-
 
 
         Intent intent = getIntent();
@@ -89,6 +87,8 @@ public static int total;
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     pricee = document.getString("price");
+
+                    carname = document.getString("name");
                     price.setText(pricee);
 
                 } else {
@@ -117,7 +117,7 @@ public static int total;
         });
 
         confirm.setOnClickListener(v -> {
-            if (isDate1Selected && isDate2Selected && (spinner!=null)) {
+            if (isDate1Selected && isDate2Selected && (spinner != null)) {
 
 
                 try {
@@ -137,7 +137,28 @@ public static int total;
                 AlertDialog.Builder builder = new AlertDialog.Builder(RentCarActivity.this);
                 builder.setTitle("Confirm Payment");
                 builder.setMessage("Are you sure you want to proceed with the payment?");
-                builder.setMessage("Total amount: " + total +" "+ " TND" );
+                if (!country.equals("Tunisia")&& !country.equals("Tunisie")&& !country.equals("United States")&& !country.equals("États-Unis")) {
+                    //set euro
+                    total = (int) (total * 0.84);
+                    //add euro symbol
+                    String stotale = String.valueOf(total);
+                    stotale = stotale + "€";
+                    builder.setMessage("Are you sure you want to proceed with the payment? \n Total: " + stotale);
+                }else if(country.equals("Tunisia")||country.equals("Tunisie")){
+                    String stotale = String.valueOf(total);
+                    stotale = stotale + "DT";
+                    builder.setMessage("Are you sure you want to proceed with the payment? \n Total: " + stotale);
+
+                }else if (country.equals("United States")||country.equals("États-Unis")){
+                    //set dollar
+                    total = (int) (total * 1.21);
+                    String stotale = String.valueOf(total);
+                    stotale = stotale + "$";
+                    builder.setMessage("Are you sure you want to proceed with the payment? \n Total: " + stotale);
+
+
+                }
+
                 builder.setPositiveButton("Yes", (dialog, which) -> {
                     // User clicked Yes button
                     try {
@@ -153,19 +174,31 @@ public static int total;
                         Map<String, Object> NewRent = new HashMap<>();
                         NewRent.put("carUID", uid);
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        NewRent.put("userID",user.getUid().toString()); //
+                        NewRent.put("userID", user.getUid().toString()); //
                         NewRent.put("startDate", selectedDate1);
                         NewRent.put("endDate", selectedDate2);
-                        NewRent.put("total",stotale);
+                        NewRent.put("total", stotale);
                         NewRent.put("location", spinner.getSelectedItem().toString());
                         NewRent.put("status", "pending");
-                        NewRent.put("carName", "carName");
-                        NewRent.put("id", uid+"93");
-                        db.collection("rents").document(uid+"93")
+                        NewRent.put("carName", carname);
+                        // make a random code from 20 characters and store it in a String variable:
+                        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                + "0123456789"
+                                + "abcdefghijklmnopqrstuvxyz";
+                        StringBuilder sb = new StringBuilder(20);
+                        for (int i = 0; i < 20; i++) {
+                            int index
+                                    = (int) (AlphaNumericString.length()
+                                    * Math.random());
+                            sb.append(AlphaNumericString
+                                    .charAt(index));
+                        }
+                        NewRent.put("id", sb.toString());
+                        db.collection("rents").document(sb.toString())
                                 .set(NewRent).addOnSuccessListener(aVoid -> {
                                     Toast.makeText(RentCarActivity.this, "Rent added successfully", Toast.LENGTH_SHORT).show();
                                     Intent j = new Intent(RentCarActivity.this, PaymentActivity.class);
-                                    j.putExtra("id", uid+"93");
+                                    j.putExtra("id", sb.toString());
                                     j.putExtra("total", total);
                                     startActivity(j);
                                     finish();

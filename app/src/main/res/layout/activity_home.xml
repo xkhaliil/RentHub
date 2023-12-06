@@ -67,5 +67,15 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6"
             app:layout_constraintVertical_bias="0.148" />
 
+    <ImageView
+        android:id="@+id/lease"
+        android:layout_width="29dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_lease_16" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -124,7 +123,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             viewHolder.price.setText(items.get(position).getPrice());
             viewHolder.image.setImageResource(R.drawable.rent);
         } else if (holder instanceof LoadingViewHolder) {
-            LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+            LoadingViewHolder loadingViewHolder = (com.example.renthub.Views.LoadingViewHolder) holder;
         }
     }
 

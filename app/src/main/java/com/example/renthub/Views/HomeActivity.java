@@ -1,5 +1,7 @@
 package com.example.renthub.Views;
 
+import static com.example.renthub.Views.SplashScreenActivity.country;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    ImageView imageView;
+    ImageView imageView,lease;
     private RecyclerView recyclerView;
     private StaticRvAdapter staticRvAdapter;
     List<DynamicRVModel> items =  new ArrayList();
@@ -74,6 +76,12 @@ public class HomeActivity extends AppCompatActivity {
             Intent j = new Intent(HomeActivity.this, AccountActivity.class);
             startActivity(j);
         });
+        lease = findViewById(R.id.lease);
+        lease.setOnClickListener(v -> {
+            Intent j = new Intent(HomeActivity.this, LeaseActivity.class);
+            startActivity(j);
+        });
+
 
     }
 
@@ -96,6 +104,19 @@ public class HomeActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String name = document.getString("name");
                                 String price = document.getString("price");
+                                String dinarprice = document.getString("price");
+                                if (!country.equals("Tunisia")&& !country.equals("Tunisie")&& !country.equals("United States")&& !country.equals("États-Unis")) {
+                                    //set euro
+                                    price = String.valueOf(Integer.parseInt(price) * 0.84);
+                                    //add euro symbol
+                                    price = price + "€";
+                                }else if(country.equals("Tunisia")||country.equals("Tunisie")){
+                                    price = price + "DT";
+                                }else if (country.equals("United States")||country.equals("États-Unis")){
+                                    //set dollar
+                                    price = String.valueOf(Integer.parseInt(price) * 1.21);
+                                    price = price + "$";
+                                }
                                 String duid = document.getId();
                                 DynamicRVModel item = new DynamicRVModel(name,price,duid);
                                 items.add(item);

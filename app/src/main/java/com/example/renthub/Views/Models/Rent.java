@@ -1,22 +1,35 @@
 package com.example.renthub.Views.Models;
 
 public class Rent {
+    String carName;
     String id;
     String carUID;
     String userID;
     String startDate;
     String endDate;
-    String price;
-    String pickupLocation;
+    String total;
+    String location;
+    String status;
 
-    public Rent(String id, String carUID, String userID, String startDate, String endDate, String price, String pickupLocation) {
+
+    public Rent(String id, String carUID, String userID, String startDate, String endDate, String total, String location, String status, String carName) {
         this.id = id;
         this.carUID = carUID;
         this.userID = userID;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.price = price;
-        this.pickupLocation = pickupLocation;
+        this.total = total;
+        this.location = location;
+        this.status = status;
+        this.carName = carName;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
     }
 
     public String getId() {
@@ -59,20 +72,27 @@ public class Rent {
         this.endDate = endDate;
     }
 
-    public String getPrice() {
-        return price;
+    public String getTotal() {
+        return total;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
-    public String getPickupLocation() {
-        return pickupLocation;
+    public String getLocation() {
+        return location;
     }
 
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
