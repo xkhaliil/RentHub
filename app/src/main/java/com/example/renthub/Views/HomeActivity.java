@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         item.add(new StaticRvModel(R.drawable.coupe, "COUPE"));
         item.add(new StaticRvModel(R.drawable.hatchback, "HATCHBACK"));
         item.add(new StaticRvModel(R.drawable.sedan, "SEDAN"));
-        item.add(new StaticRvModel(R.drawable.sport, "Sports"));
+        item.add(new StaticRvModel(R.drawable.sport, "SPORTS"));
         item.add(new StaticRvModel(R.drawable.truck, "TRUCK"));
         item.add(new StaticRvModel(R.drawable.van, "VAN"));
         item.add(new StaticRvModel(R.drawable.pickup, "PICKUP"));

@@ -51,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             holder.imageView.setImageResource(R.drawable.accepted);
         } else if (status.equals("rejected")) {
             holder.StatusView.setTextColor(context.getResources().getColor(R.color.red));
-            holder.imageView.setImageResource(R.drawable.completed);
+            holder.imageView.setImageResource(R.drawable.rejected);
         }
         if(status.equals("approved")){
            holder.maptext.setText("Click to view map");
